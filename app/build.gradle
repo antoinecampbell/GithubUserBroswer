@@ -1,0 +1,76 @@
+apply plugin: 'com.android.application'
+apply plugin: "sonar-runner"
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "com.antoinecampbell.githubuserbrowser"
+        minSdkVersion 16
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+        project.ext.set("archivesBaseName", project.parent.name + "-" + versionName + "-" + versionCode)
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            testCoverageEnabled true
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+        exclude 'LICENSE.txt'
+    }
+}
+
+sonarRunner {
+    sonarProperties {
+        property "sonar.profile", "Android Lint"
+        property "sonar.sources", "src/main/java"
+        property "sonar.java.binaries", "build/intermediates/classes/debug"
+        property "sonar.tests", "src/androidTest/java"
+        property "sonar.projectKey", android.defaultConfig.applicationId
+        property "sonar.projectName", "GithubUserBrowser"
+        property "sonar.projectVersion", android.defaultConfig.versionName
+        property "sonar.projectDescription", "Github User Broswer Android App"
+        property "sonar.junit.reportsPath", "build/outputs/androidTest-results/connected"
+        property "sonar.jacoco.reportPath", "build/outputs/code-coverage/connected/coverage.ec"
+    }
+}
+
+/**
+ * Get the name of the working branch of the project
+ *
+ * @return Name of the working branch
+ */
+def getWorkingBranch() {
+    // Triple double-quotes for the breaklines
+    def workingBranch = """git --git-dir=${rootDir}/../.git
+                               --work-tree=${rootDir}/..
+                               rev-parse --abbrev-ref HEAD""".execute().text.trim()
+    print "Working branch: " + workingBranch
+    return workingBranch
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:recyclerview-v7:21.0.3'
+    compile 'com.android.support:cardview-v7:21.0.3'
+    compile 'com.jakewharton:butterknife:6.1.0'
+    compile 'com.squareup.retrofit:converter-jackson:1.9.0'
+    compile 'com.squareup.okhttp:okhttp:2.2.0'
+    compile 'com.squareup.picasso:picasso:2.5.0'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
+    androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
+    androidTestCompile 'org.mockito:mockito-core:1.10.17'
+    androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.2.1'
+}

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Github User Browser</string>
+    <string name="title_activity_main">@string/app_name</string>
+    <string name="detail_fragment_filler_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut id mi at nisl tincidunt vestibulum. In pretium nisi at odio posuere, sed ultricies enim cursus. Vestibulum molestie lobortis euismod. Nullam et magna nec neque malesuada condimentum id dictum elit. Cras dapibus, mi cursus facilisis accumsan, diam nisi dapibus leo, sagittis consectetur est purus sed ex. Nunc vulputate neque orci, eget venenatis neque faucibus et. Phasellus ligula tellus, maximus vel posuere sed, imperdiet nec metus. Sed auctor arcu nunc, sit amet sagittis velit ultricies sit amet. Maecenas placerat felis sed elit blandit, sed congue elit auctor. Fusce vitae lacus at massa ultrices auctor vitae eu lectus. Etiam tempus ullamcorper risus, at facilisis arcu aliquet ac. Integer iaculis luctus augue, at tempor mauris congue eu. Integer a pellentesque purus. Vivamus quis sapien felis. Morbi suscipit consequat metus aliquam luctus.</string>
+</resources>
