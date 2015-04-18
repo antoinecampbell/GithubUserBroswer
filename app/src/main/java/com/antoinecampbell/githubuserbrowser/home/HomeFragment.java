@@ -1,20 +1,24 @@
-package com.antoinecampbell.githubuserbrowser.fragment;
+package com.antoinecampbell.githubuserbrowser.home;
 
-import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.ListAdapter;
 
 import com.antoinecampbell.githubuserbrowser.R;
-import com.antoinecampbell.githubuserbrowser.adapter.HomeRecyclerViewAdapter;
+import com.antoinecampbell.githubuserbrowser.detail.DetailActivity;
+import com.antoinecampbell.githubuserbrowser.model.User;
 import com.antoinecampbell.githubuserbrowser.model.UsersResponse;
 import com.antoinecampbell.githubuserbrowser.service.GithubService;
 import com.antoinecampbell.githubuserbrowser.service.ServiceUtil;
+
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -22,15 +26,20 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class HomeFragment extends Fragment implements Callback<UsersResponse>, View.OnClickListener {
+public class HomeFragment extends Fragment
+        implements Callback<UsersResponse>, AdapterView.OnItemClickListener {
 
     private static final String TAG = HomeFragment.class.getSimpleName();
+
     private static final int ITEMS_PER_PAGE = 50;
+    private int page;
+    // Purposely set to default visibility so it is available in the test which shares the package
+    ListAdapter adapter;
 
-    int page;
-
-    @InjectView(R.id.home_fragment_recyclerview)
-    RecyclerView recyclerView;
+    @InjectView(android.R.id.empty)
+    View emptyView;
+    @InjectView(R.id.fragment_home_gridview)
+    GridView gridView;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -42,18 +51,18 @@ public class HomeFragment extends Fragment implements Callback<UsersResponse>, V
 
         if (savedInstanceState == null) {
             page = 1;
+            adapter = null;
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.inject(this, view);
 
-        GridLayoutManager gridLayoutManager =
-                new GridLayoutManager(view.getContext(), 2, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(gridLayoutManager);
+        gridView.setOnItemClickListener(this);
 
         GithubService githubService = ServiceUtil.getGithubService();
         githubService.getCharlotteUsers(page, ITEMS_PER_PAGE, this);
@@ -80,18 +89,26 @@ public class HomeFragment extends Fragment implements Callback<UsersResponse>, V
     @Override
     public void success(UsersResponse usersResponse, Response response) {
         if (usersResponse.getItems() != null) {
-            recyclerView.setAdapter(new HomeRecyclerViewAdapter(getActivity(), usersResponse.getItems()));
+            adapter = new HomeFragmentGridViewAdapter(getActivity(), usersResponse.getItems());
+            gridView.setEmptyView(emptyView);
+            gridView.setAdapter(adapter);
         }
     }
 
     @Override
     public void failure(RetrofitError error) {
+        adapter = new HomeFragmentGridViewAdapter(getActivity(), new ArrayList<User>());
+        gridView.setEmptyView(emptyView);
+        gridView.setAdapter(adapter);
         Log.e(TAG, error.getMessage());
         Log.e(TAG, error.getUrl());
     }
 
     @Override
-    public void onClick(View v) {
-
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        User user = (User) parent.getItemAtPosition(position);
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        intent.putExtras(DetailActivity.newInstanceBundle(user));
+        startActivity(intent);
     }
 }

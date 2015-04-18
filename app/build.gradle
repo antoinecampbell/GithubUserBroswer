@@ -19,10 +19,12 @@ android {
             debuggable true
             minifyEnabled false
             testCoverageEnabled true
+            buildConfigField 'boolean', 'SERVICE_DEBUGGING', 'false'
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField 'boolean', 'SERVICE_DEBUGGING', 'false'
         }
     }
     packagingOptions {
@@ -63,14 +65,13 @@ def getWorkingBranch() {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:recyclerview-v7:21.0.3'
-    compile 'com.android.support:cardview-v7:21.0.3'
+    compile 'com.android.support:appcompat-v7:22.0.0'
     compile 'com.jakewharton:butterknife:6.1.0'
     compile 'com.squareup.retrofit:converter-jackson:1.9.0'
     compile 'com.squareup.okhttp:okhttp:2.2.0'
     compile 'com.squareup.picasso:picasso:2.5.0'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
-    androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
+    compile 'com.makeramen:roundedimageview:2.0.1'
+    compile 'com.android.support.test.espresso:espresso-core:2.0'
     androidTestCompile 'org.mockito:mockito-core:1.10.17'
     androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.2.1'
 }

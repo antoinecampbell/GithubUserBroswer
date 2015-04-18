@@ -1,14 +1,13 @@
-package com.antoinecampbell.githubuserbrowser.activity;
+package com.antoinecampbell.githubuserbrowser.detail;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
 import com.antoinecampbell.githubuserbrowser.R;
-import com.antoinecampbell.githubuserbrowser.fragment.DetailFragment;
 import com.antoinecampbell.githubuserbrowser.model.User;
 
-public class DetailActivity extends Activity {
+public class DetailActivity extends ActionBarActivity {
 
     private static final String KEY_ARG_USER = "KEY_ARG_USER";
 
@@ -24,15 +23,14 @@ public class DetailActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        if(getActionBar() != null) {
-            getActionBar().setDisplayHomeAsUpEnabled(true);
-            getActionBar().setHomeButtonEnabled(true);
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
         User user = getIntent().getExtras().getParcelable(KEY_ARG_USER);
         setTitle(user.getLogin());
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.container, DetailFragment.newInstance(user)).commit();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.activity_detail_fragment_container,
+                            DetailFragment.newInstance(user)).commit();
         }
     }
 

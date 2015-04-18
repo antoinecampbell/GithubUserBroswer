@@ -2,4 +2,5 @@
 <resources>
     <color name="primary">#224488</color>
     <color name="primary_dark">#122448</color>
+    <color name="grid_selector">#AD224488</color>
 </resources>

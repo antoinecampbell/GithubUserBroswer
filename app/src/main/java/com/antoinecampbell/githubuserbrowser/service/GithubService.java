@@ -9,5 +9,9 @@ import retrofit.http.Query;
 public interface GithubService {
 
     @GET("/search/users?q=location:Charlotte&sort=followers&order=desc")
-    void getCharlotteUsers(@Query("page") int page, @Query("per_page") int perPage, Callback<UsersResponse> callback);
+    void getCharlotteUsers(
+            @Query("page")
+            int page,
+            @Query("per_page")
+            int perPage, Callback<UsersResponse> callback);
 }

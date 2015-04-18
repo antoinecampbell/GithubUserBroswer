@@ -1,9 +1,9 @@
-package com.antoinecampbell.githubuserbrowser.fragment;
+package com.antoinecampbell.githubuserbrowser.detail;
 
-import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,14 +43,15 @@ public class DetailFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
         ButterKnife.inject(this, view);
 
         Picasso picasso = ServiceUtil.getPicasso(getActivity());
         int imageSize = getActivity().getResources().getInteger(R.integer.cardview_iamge_size);
         Uri imageUri = ServiceUtil.getSizedImageUri(getActivity(), user.getAvatarUrl(), imageSize);
-        picasso.load(imageUri).placeholder(R.mipmap.ic_launcher).into(avatarImageView);
+        picasso.load(imageUri).into(avatarImageView);
 
         return view;
     }

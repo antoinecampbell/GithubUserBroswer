@@ -1,6 +1,5 @@
-package com.antoinecampbell.githubuserbrowser;
+package com.antoinecampbell.githubuserbrowser.model;
 
-import com.antoinecampbell.githubuserbrowser.model.UsersResponse;
 import com.antoinecampbell.githubuserbrowser.service.ServiceUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

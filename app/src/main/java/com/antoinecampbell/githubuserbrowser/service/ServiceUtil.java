@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
+import com.antoinecampbell.githubuserbrowser.BuildConfig;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.picasso.OkHttpDownloader;
@@ -28,7 +29,8 @@ public class ServiceUtil {
             RestAdapter restAdapter = new RestAdapter.Builder()
                     .setClient(new OkClient())
                     .setConverter(new JacksonConverter(getObjectMapper()))
-                    .setLogLevel(RestAdapter.LogLevel.FULL)
+                    .setLogLevel(BuildConfig.SERVICE_DEBUGGING ? RestAdapter.LogLevel.FULL :
+                            RestAdapter.LogLevel.NONE)
                     .setEndpoint(GITHUB_SERVICE_ENDPOINT)
                     .setRequestInterceptor(new RequestInterceptor() {
                         @Override
@@ -50,14 +52,15 @@ public class ServiceUtil {
             picassoInstance = new Picasso.Builder(context)
                     .indicatorsEnabled(true)
                     .downloader(new OkHttpDownloader(context))
-                    .loggingEnabled(true).build();
+                    .loggingEnabled(BuildConfig.SERVICE_DEBUGGING).build();
         }
         return picassoInstance;
     }
 
     public static Uri getSizedImageUri(Context context, String imageUrl, int imageSize) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        imageSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, imageSize, displayMetrics);
+        imageSize = (int) TypedValue
+                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, imageSize, displayMetrics);
         Uri imageUri = Uri.parse(imageUrl);
         imageUri = imageUri.buildUpon()
                 .appendQueryParameter("s", String.valueOf(imageSize))
