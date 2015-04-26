@@ -26,11 +26,4 @@ public class UsersResponse {
         this.totalCount = totalCount;
     }
 
-    @Override
-    public String toString() {
-        return "UsersResponse{" +
-                "totalCount=" + totalCount +
-                ", items=" + items +
-                '}';
-    }
 }

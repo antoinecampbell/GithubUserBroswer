@@ -1,6 +1,9 @@
 package com.antoinecampbell.githubuserbrowser.detail;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
@@ -38,8 +41,12 @@ public class DetailActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
-                break;
+                Intent upIntent = NavUtils.getParentActivityIntent(this);
+                upIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                TaskStackBuilder.create(this)
+                        .addNextIntentWithParentStack(upIntent)
+                        .startActivities();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

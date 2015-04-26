@@ -1,0 +1,38 @@
+{
+  "total_count": 226,
+  "incomplete_results": false,
+  "items": [
+    {
+      "login": "antoinecampbell",
+      "id": 4073604,
+      "avatar_url": "https://avatars.githubusercontent.com/u/4073604?v=3",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/antoinecampbell",
+      "html_url": "https://github.com/antoinecampbell",
+      "followers_url": "https://api.github.com/users/antoinecampbell/followers",
+      "following_url": "https://api.github.com/users/antoinecampbell/following{/other_user}",
+      "gists_url": "https://api.github.com/users/antoinecampbell/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/antoinecampbell/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/antoinecampbell/subscriptions",
+      "organizations_url": "https://api.github.com/users/antoinecampbell/orgs",
+      "repos_url": "https://api.github.com/users/antoinecampbell/repos",
+      "events_url": "https://api.github.com/users/antoinecampbell/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/antoinecampbell/received_events",
+      "type": "User",
+      "site_admin": false,
+      "name": "Antoine Campbell",
+      "company": "",
+      "blog": "",
+      "location": "Charlotte, NC",
+      "email": "",
+      "hireable": false,
+      "bio": null,
+      "public_repos": 4,
+      "public_gists": 1,
+      "followers": 8,
+      "following": 2,
+      "created_at": "2013-04-05T23:22:20Z",
+      "updated_at": "2015-04-21T22:19:17Z"
+    }
+  ]
+}

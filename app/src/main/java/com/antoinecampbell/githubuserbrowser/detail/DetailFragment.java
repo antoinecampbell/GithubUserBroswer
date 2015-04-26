@@ -11,7 +11,7 @@ import android.widget.ImageView;
 
 import com.antoinecampbell.githubuserbrowser.R;
 import com.antoinecampbell.githubuserbrowser.model.User;
-import com.antoinecampbell.githubuserbrowser.service.ServiceUtil;
+import com.antoinecampbell.githubuserbrowser.service.ServiceUtils;
 import com.squareup.picasso.Picasso;
 
 import butterknife.ButterKnife;
@@ -48,9 +48,9 @@ public class DetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
         ButterKnife.inject(this, view);
 
-        Picasso picasso = ServiceUtil.getPicasso(getActivity());
+        Picasso picasso = ServiceUtils.getPicasso(getActivity());
         int imageSize = getActivity().getResources().getInteger(R.integer.cardview_iamge_size);
-        Uri imageUri = ServiceUtil.getSizedImageUri(getActivity(), user.getAvatarUrl(), imageSize);
+        Uri imageUri = ServiceUtils.getSizedImageUri(getActivity(), user.getAvatarUrl(), imageSize);
         picasso.load(imageUri).into(avatarImageView);
 
         return view;

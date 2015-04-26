@@ -15,10 +15,12 @@ import com.antoinecampbell.githubuserbrowser.R;
 import com.antoinecampbell.githubuserbrowser.detail.DetailActivity;
 import com.antoinecampbell.githubuserbrowser.model.User;
 import com.antoinecampbell.githubuserbrowser.model.UsersResponse;
+import com.antoinecampbell.githubuserbrowser.service.DaggerServiceComponent;
 import com.antoinecampbell.githubuserbrowser.service.GithubService;
-import com.antoinecampbell.githubuserbrowser.service.ServiceUtil;
 
 import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -35,6 +37,8 @@ public class HomeFragment extends Fragment
     private int page;
     // Purposely set to default visibility so it is available in the test which shares the package
     ListAdapter adapter;
+    @Inject
+    GithubService githubService;
 
     @InjectView(android.R.id.empty)
     View emptyView;
@@ -52,7 +56,9 @@ public class HomeFragment extends Fragment
         if (savedInstanceState == null) {
             page = 1;
             adapter = null;
+            githubService = null;
         }
+        DaggerServiceComponent.create().inject(this);
     }
 
     @Override
@@ -64,26 +70,14 @@ public class HomeFragment extends Fragment
 
         gridView.setOnItemClickListener(this);
 
-        GithubService githubService = ServiceUtil.getGithubService();
-        githubService.getCharlotteUsers(page, ITEMS_PER_PAGE, this);
-
-        // Use sample response stored in assets file instead of calling service
-        /*
-        ObjectMapper mapper = ServiceUtil.getObjectMapper();
-        try {
-            UsersResponse response = mapper.readValue(getActivity().getAssets().open("response.json"), UsersResponse.class);
-            success(response, null);
-        } catch (IOException e) {
-            Log.e(TAG, "Error loading json", e);
-        }
-        */
-
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
+        githubService.getCharlotteUsers(page, ITEMS_PER_PAGE, this);
     }
 
     @Override

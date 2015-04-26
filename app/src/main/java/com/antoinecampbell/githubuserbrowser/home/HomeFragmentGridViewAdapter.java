@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.antoinecampbell.githubuserbrowser.R;
 import com.antoinecampbell.githubuserbrowser.model.User;
-import com.antoinecampbell.githubuserbrowser.service.ServiceUtil;
+import com.antoinecampbell.githubuserbrowser.service.ServiceUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -44,7 +44,7 @@ public class HomeFragmentGridViewAdapter extends BaseAdapter {
                 .applyDimension(TypedValue.COMPLEX_UNIT_DIP, imageSize, displayMetrics);
         Log.d(TAG, "ImageSize: " + mImageSize);
 
-        mPicasso = ServiceUtil.getPicasso(context);
+        mPicasso = ServiceUtils.getPicasso(context);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class HomeFragmentGridViewAdapter extends BaseAdapter {
         User user = getItem(position);
         holder.textView.setText(user.getLogin());
         if (!TextUtils.isEmpty(user.getAvatarUrl())) {
-            Uri imageUri = ServiceUtil
+            Uri imageUri = ServiceUtils
                     .getSizedImageUri(parent.getContext(), user.getAvatarUrl(), mImageSize);
             mPicasso.load(imageUri).into(holder.imageView);
         }
