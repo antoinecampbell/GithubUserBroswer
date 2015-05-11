@@ -4,6 +4,9 @@ import android.os.Parcel;
 import android.test.AndroidTestCase;
 import android.test.suitebuilder.annotation.SmallTest;
 
+/**
+ * Unit tests for User
+ */
 public class UserTest extends AndroidTestCase {
 
     @Override
@@ -11,6 +14,9 @@ public class UserTest extends AndroidTestCase {
         super.setUp();
     }
 
+    /**
+     * Test user parcel is created correctly
+     */
     @SmallTest
     public void testUserParcel() {
         User user = new User();

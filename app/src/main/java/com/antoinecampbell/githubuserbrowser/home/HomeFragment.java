@@ -9,18 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ListAdapter;
 
 import com.antoinecampbell.githubuserbrowser.R;
 import com.antoinecampbell.githubuserbrowser.detail.DetailActivity;
 import com.antoinecampbell.githubuserbrowser.model.User;
 import com.antoinecampbell.githubuserbrowser.model.UsersResponse;
-import com.antoinecampbell.githubuserbrowser.service.DaggerServiceComponent;
 import com.antoinecampbell.githubuserbrowser.service.GithubService;
+import com.antoinecampbell.githubuserbrowser.service.ServiceUtils;
 
 import java.util.ArrayList;
-
-import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -36,8 +33,7 @@ public class HomeFragment extends Fragment
     private static final int ITEMS_PER_PAGE = 50;
     private int page;
     // Purposely set to default visibility so it is available in the test which shares the package
-    ListAdapter adapter;
-    @Inject
+    HomeFragmentGridViewAdapter adapter;
     GithubService githubService;
 
     @InjectView(android.R.id.empty)
@@ -56,9 +52,8 @@ public class HomeFragment extends Fragment
         if (savedInstanceState == null) {
             page = 1;
             adapter = null;
-            githubService = null;
+            githubService = ServiceUtils.getGithubService(getActivity());
         }
-        DaggerServiceComponent.create().inject(this);
     }
 
     @Override
@@ -82,10 +77,13 @@ public class HomeFragment extends Fragment
 
     @Override
     public void success(UsersResponse usersResponse, Response response) {
-        if (usersResponse.getItems() != null) {
+        if (usersResponse.getItems() != null && getActivity() != null) {
             adapter = new HomeFragmentGridViewAdapter(getActivity(), usersResponse.getItems());
-            gridView.setEmptyView(emptyView);
             gridView.setAdapter(adapter);
+        } else {
+            adapter = new HomeFragmentGridViewAdapter(getActivity(), new ArrayList<User>());
+            gridView.setEmptyView(emptyView);
+            gridView.setEmptyView(emptyView);
         }
     }
 

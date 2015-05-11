@@ -17,6 +17,9 @@ import static android.support.test.espresso.action.ViewActions.*;
 import static android.support.test.espresso.assertion.ViewAssertions.*;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
 
+/**
+ * Instrumentation tests for DetailActivity
+ */
 public class DetailActivityTest extends ActivityInstrumentationTestCase2<DetailActivity> {
 
     private User user;
@@ -46,6 +49,9 @@ public class DetailActivityTest extends ActivityInstrumentationTestCase2<DetailA
         super.tearDown();
     }
 
+    /**
+     * Test UI is present
+     */
     public void testUiPresent() {
         // Verify fragment container present
         onView(withId(R.id.activity_detail_fragment_container)).check(matches(isDisplayed()));
@@ -57,6 +63,9 @@ public class DetailActivityTest extends ActivityInstrumentationTestCase2<DetailA
         TestUtils.takeScreenshot(this, solo, "detail_activity");
     }
 
+    /**
+     * Test up navigation navigates to the HomeActivity
+     */
     public void testUpNavigation() {
         // Remove Robotium activity monitor, it blocks other monitors from being hit
         getInstrumentation().removeMonitor(solo.getActivityMonitor());

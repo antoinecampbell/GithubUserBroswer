@@ -6,13 +6,15 @@ import android.widget.AdapterView;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
+/**
+ * Custom view matcher used to verify a ViewAdapter's item count
+ */
 public class AdapterViewCountMatcher extends BaseMatcher<View> {
 
     private int count;
     private int actualCount;
 
-    public AdapterViewCountMatcher(int count)
-    {
+    public AdapterViewCountMatcher(int count) {
         this.count = count;
         actualCount = -1;
     }

@@ -25,9 +25,13 @@ import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static android.support.test.espresso.action.ViewActions.*;
 import static org.hamcrest.Matchers.*;
 
+/**
+ * Instrumentation test for an isolated HomeFragment
+ */
 public class HomeFragmentTest extends ActivityInstrumentationTestCase2<TestFragmentActivity> {
 
     private Solo solo;
+    private UsersResponse response;
 
     public HomeFragmentTest() {
         super(TestFragmentActivity.class);
@@ -40,10 +44,78 @@ public class HomeFragmentTest extends ActivityInstrumentationTestCase2<TestFragm
 
         // Use sample response stored in assets file instead of calling service
         ObjectMapper mapper = ServiceUtils.getObjectMapper();
-        final UsersResponse response =
-                mapper.readValue(getActivity().getAssets().open("response.json"),
-                        UsersResponse.class);
+        response = mapper.readValue(getActivity().getAssets().open("response.json"),
+                UsersResponse.class);
 
+    }
+
+    /**
+     * Test UI is present
+     */
+    public void testUiPresent() {
+        loadFragmentWithResponse(response);
+
+        // Ensure view loaded
+        onView(withId(R.id.activity_test_fragment_container)).check(matches(isDisplayed()));
+
+        // Verify gridview present
+        onView(withId(R.id.fragment_home_gridview)).check(matches(isDisplayed()));
+
+        TestUtils.takeScreenshot(this, solo, "home_page");
+    }
+
+    /**
+     * Test UI with single item present
+     */
+    public void testSingleItem() {
+        loadFragmentWithResponse(response);
+
+        // Adapter should have only one item
+        onView(withId(R.id.fragment_home_gridview)).check(matches(new AdapterViewCountMatcher(1)));
+
+        TestUtils.takeScreenshot(this, solo, "home_page_single_item");
+    }
+
+    /**
+     * Test detail page is loaded when item is clicked
+     */
+    public void testDetailPageLoad() {
+        loadFragmentWithResponse(response);
+
+        // Click the first item in the list
+        onData(allOf(is(instanceOf(User.class)))).inAdapterView(withId(R.id.fragment_home_gridview))
+                .atPosition(0).perform(longClick());
+
+        boolean detailActivityLoaded = solo.waitForActivity(DetailActivity.class, 5000);
+        assertTrue(detailActivityLoaded);
+
+        // Ensure the detail activity intent was fired once
+        assertEquals(1, solo.getActivityMonitor().getHits());
+
+        TestUtils.takeScreenshot(this, solo, "home_page_load_detail");
+    }
+
+    /**
+     * Test empty view appears when no data is returned from service
+     */
+    public void testEmptyResponse() {
+        loadFragmentWithResponse(new UsersResponse());
+
+        // Ensure view loaded
+        onView(withId(R.id.activity_test_fragment_container)).check(matches(isDisplayed()));
+
+        // Empty view should be present
+        onView(withId(android.R.id.empty)).check(matches(isDisplayed()));
+
+        TestUtils.takeScreenshot(this, solo, "home_page_empty_list");
+    }
+
+    /**
+     * Load fragment with stubbed UserResponse
+     *
+     * @param response UserResponse object
+     */
+    private void loadFragmentWithResponse(final UsersResponse response) {
         // Override the fragment to replace service implementation
         HomeFragment fragment = new HomeFragment() {
 
@@ -72,37 +144,6 @@ public class HomeFragmentTest extends ActivityInstrumentationTestCase2<TestFragm
         // Attach fragment
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.activity_test_fragment_container, fragment).commit();
-    }
-
-    public void testUiPresent() {
-        // Ensure view loaded
-        onView(withId(R.id.activity_test_fragment_container)).check(matches(isDisplayed()));
-
-        // Verify gridview present
-        onView(withId(R.id.fragment_home_gridview)).check(matches(isDisplayed()));
-
-        TestUtils.takeScreenshot(this, solo, "home_page");
-    }
-
-    public void testSingleItem() {
-        // Adapter should have only one item
-        onView(withId(R.id.fragment_home_gridview)).check(matches(new AdapterViewCountMatcher(1)));
-
-        TestUtils.takeScreenshot(this, solo, "home_page_single_item");
-    }
-
-    public void testDetailPageLoad() {
-        // Click the first item in the list
-        onData(allOf(is(instanceOf(User.class)))).inAdapterView(withId(R.id.fragment_home_gridview))
-                .atPosition(0).perform(longClick());
-
-        boolean detailActivityLoaded = solo.waitForActivity(DetailActivity.class, 5000);
-        assertTrue(detailActivityLoaded);
-
-        // Ensure the detail activity intent was fired once
-        assertEquals(1, solo.getActivityMonitor().getHits());
-
-        TestUtils.takeScreenshot(this, solo, "home_page_load_detail");
     }
 
 

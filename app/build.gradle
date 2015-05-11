@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: "sonar-runner"
+
 
 android {
     compileSdkVersion 21
@@ -16,6 +16,7 @@ android {
     }
     buildTypes {
         debug {
+            android.defaultConfig.minSdkVersion 18
             debuggable true
             minifyEnabled false
             testCoverageEnabled true
@@ -50,6 +51,7 @@ sonarRunner {
         property "sonar.projectDescription", "Github User Broswer Android App"
         property "sonar.junit.reportsPath", "build/outputs/androidTest-results/connected"
         property "sonar.jacoco.reportPath", "build/outputs/code-coverage/connected/coverage.ec"
+        property "sonar.sourceEncoding", "UTF-8"
     }
 }
 
@@ -76,17 +78,12 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.0'
     compile 'com.makeramen:roundedimageview:2.0.1'
 
-    compile 'com.google.dagger:dagger:2.0'
-    apt 'com.google.dagger:dagger-compiler:2.0'
-    provided 'javax.annotation:javax.annotation-api:1.2'
-
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.1'
     androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.2.1'
-    androidTestCompile 'org.mockito:mockito-core:1.10.19'
-    androidTestCompile('com.squareup.okhttp:mockwebserver:2.3.0') {
-        exclude module: 'okio'
-        exclude module: 'okhttp'
-    }
+
+    androidTestCompile 'com.android.support.test:runner:0.2'
+    androidTestCompile 'com.android.support.test:rules:0.2'
+    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.0'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.10.19'
