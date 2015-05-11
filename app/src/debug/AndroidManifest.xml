@@ -4,6 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Does not appear to work -->
     <uses-sdk tools:overrideLibrary="android.support.test.uiautomator.v18"/>
 
     <!-- Activity used to test fragments -->

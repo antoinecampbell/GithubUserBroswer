@@ -16,6 +16,7 @@ android {
     }
     buildTypes {
         debug {
+            // Added due to library conflict (UIAutomator)
             android.defaultConfig.minSdkVersion 18
             debuggable true
             minifyEnabled false
