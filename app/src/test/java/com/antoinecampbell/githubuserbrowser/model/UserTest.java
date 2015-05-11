@@ -7,6 +7,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * Unit tests for User
+ */
 public class UserTest {
 
     @Before
@@ -14,6 +17,11 @@ public class UserTest {
 
     }
 
+    /**
+     * Test successful User parsing from JSON
+     *
+     * @throws Exception
+     */
     @Test
     public void testUserSuccessfulParse() throws Exception {
         String json =
